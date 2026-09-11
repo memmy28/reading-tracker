@@ -40,6 +40,32 @@ This app uses [Supabase](https://supabase.com) (hosted Postgres + auth) as its b
 4. Create the database tables: open **Database > SQL Editor** in your Supabase project, paste in the contents of [`supabase/schema.sql`](supabase/schema.sql), and run it. This creates a `books` table (covering TBR, currently-reading, and read books) with Row Level Security so each signed-in user only sees their own data.
 5. The app talks to Supabase through `src/lib/supabaseClient.ts`, which reads the env vars above. Import `supabase` from there wherever you need to query the database or handle auth.
 
+### Running Supabase locally (optional)
+
+Instead of pointing at the hosted project, you can run the full Supabase stack locally with Docker via the Supabase CLI (already added as a dev dependency).
+
+```bash
+npx supabase start   # first run pulls Docker images, so it takes a few minutes
+```
+
+This project's `supabase/config.toml` sets the local **API port to 9999** (instead of the CLI's default 54321), so once it's running, point your `.env.local` at:
+
+```
+VITE_SUPABASE_URL=http://127.0.0.1:9999
+```
+
+`supabase start` prints the local **anon key** to use for `VITE_SUPABASE_ANON_KEY` — you can also get it anytime with `npx supabase status`. It also prints a Studio URL (a local dashboard, default `http://127.0.0.1:54323`) for browsing tables and data.
+
+Apply the schema locally the same way as in the cloud: open the local Studio's SQL Editor and run [`supabase/schema.sql`](supabase/schema.sql), or run `npx supabase db reset` to reset the local database against your migrations.
+
+Stop the local stack when you're done:
+
+```bash
+npx supabase stop
+```
+
+Note: this requires Docker Desktop (or another Docker-compatible engine) to be running. If you already have another local Supabase project running, its other ports (database, Studio, etc.) default to the same values as this project's — stop it first, or edit `supabase/config.toml` to change those too.
+
 ## Other scripts
 
 ```bash

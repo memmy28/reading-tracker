@@ -1,8 +1,5 @@
--- Starter schema for reading-tracker.
--- Run this once in your Supabase project's SQL Editor (Database > SQL Editor > New query).
--- It creates a single `books` table covering TBR, currently-reading, and
--- finished books, scoped per-user via Row Level Security. Extend/adjust
--- as your data model grows (e.g. separate reading_sessions table for stats).
+-- Base schema: a single `books` table covering TBR, currently-reading, and
+-- finished books, scoped per-user via Row Level Security.
 
 create type book_status as enum ('tbr', 'reading', 'read');
 
